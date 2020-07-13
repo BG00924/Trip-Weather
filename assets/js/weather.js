@@ -3,9 +3,10 @@ var cityFormEl = document.getElementById('city-form')
 var currentWeatherEl = document.getElementById('current-weather')
 var forecastLabelEl = document.getElementById('forecast-label')
 var forecastWeatherEl = document.getElementById('forecast')
+var pastCities = document.getElementById('past-city')
 var today = moment().format("MM/DD/YYYY")
 
-
+var cities = []
 
 var getCurrentWeather = function(city) {
     var apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=a39ef6ecc7e9e0847da514b5eeb819bb"
@@ -32,7 +33,7 @@ var getCurrentWeather = function(city) {
 };
 
 var getForecastWeather = function(city) {
-    var apiURLtwo = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&cnt=5&units=imperial&appid=a39ef6ecc7e9e0847da514b5eeb819bb"
+    var apiURLtwo = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=a39ef6ecc7e9e0847da514b5eeb819bb"
     fetch(apiURLtwo)
         .then(function(response) {
             if (response.ok) {
@@ -73,7 +74,9 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
     //var cityName = weather.name
     var currentCityEl = document.createElement("div")
     //currentCityEl.classList = ""
-    currentCityEl.textContent = weather.name + " " + today
+    currentCityEl.textContent = weather.name + " (" + today +")"
+    var currentIcon = document.createElement("img")
+    currentIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weather.weather[0].icon + ".png")
     var currentTempEl = document.createElement("div")
     currentTempEl.textContent = "Temperature: " + weather.main.temp + "° F"
     var currentHumidity = document.createElement("div")
@@ -83,6 +86,7 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
     var uvIndex = document.createElement("div")
     uvIndex.textContent = "UV Index: " + uv
     //console.log(uv);
+    currentCityEl.appendChild(currentIcon)
     currentWeatherEl.appendChild(currentCityEl)
     currentWeatherEl.appendChild(currentTempEl)
     currentWeatherEl.appendChild(currentHumidity)
@@ -91,27 +95,79 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
 }
 
 var displayForecastWeather = function(forecast, searchTerm) {
+    var forecastArray = [
+        {
+            day: moment(forecast.list[7].dt * 1000).format("MM/DD/YYYY"),
+            icon: forecast.list[7].weather[0].icon,
+            temp: forecast.list[7].main.temp,
+            humid: forecast.list[7].main.humidity,
+        },
+        {
+            day: moment(forecast.list[8].dt * 1000).format("MM/DD/YYYY"),
+            icon: forecast.list[15].weather[0].icon,
+            temp: forecast.list[15].main.temp,
+            humid: forecast.list[15].main.humidity,
+        },
+        {
+            day: moment(forecast.list[23].dt * 1000).format("MM/DD/YYYY"),
+            icon: forecast.list[23].weather[0].icon,
+            temp: forecast.list[23].main.temp,
+            humid: forecast.list[23].main.humidity,
+        },
+        {
+            day: moment(forecast.list[31].dt * 1000).format("MM/DD/YYYY"),
+            icon: forecast.list[31].weather[0].icon,
+            temp: forecast.list[31].main.temp,
+            humid: forecast.list[31].main.humidity,
+        },
+        {
+            day: moment(forecast.list[39].dt * 1000).format("MM/DD/YYYY"),
+            icon: forecast.list[39].weather[0].icon,
+            temp: forecast.list[39].main.temp,
+            humid: forecast.list[39].main.humidity,
+        },
+        
+    ]
+
+    //console.log(forecastArray)
+
     if (forecast.length === 0) {
         forecastWeatherEl.textContent = "Forecast not available.";
         return;
     } 
     else {
+        forecastWeatherEl.textContent = ""
         forecastLabelEl.textContent = "5-Day Forecast:"
-        
-        for (var i = 0; i < forecast.list.length; i++) {
-            var forecastDate = moment(forecast.list[i].dt).format("MM/DD/YYYY")
-            console.log(forecast.list[i].dt)
+        for (var i = 0; i < forecastArray.length; i++) {
+            //var forecastDate = forecastArray.day
+            //console.log(forecast.list[i].dt)
             var eachForecast = document.createElement("div")
-            //eachForecast.classList=""
-            eachForecast.setAttribute("id", forecast[i])
-            var eachForecastDate = document.createElement("div")
-            eachForecastDate.textContent = forecastDate
-
+            eachForecast.classList="card text-white bg-primary p-1"
+            eachForecast.setAttribute("id", forecastArray[i])
+            var eachForecastDate = document.createElement("p")
+            eachForecastDate.classList="card-title"
+            eachForecastDate.textContent = forecastArray[i].day
+            var eachIcon = document.createElement("img")
+            eachIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + forecastArray[i].icon + ".png")
+            var eachTemp = document.createElement("p")
+            eachTemp.textContent = "Temp: " + forecastArray[i].temp + "° F"
+            eachTemp.classList="card-text"
+            var eachHumidity = document.createElement("p")
+            eachHumidity.textContent = "Humidity: " + forecastArray[i].humid + " %"
+            eachHumidity.classList="card-text"
+            
             eachForecast.appendChild(eachForecastDate)
+            eachForecast.appendChild(eachIcon)
+            eachForecast.appendChild(eachTemp)
+            eachForecast.appendChild(eachHumidity)
             forecastWeatherEl.appendChild(eachForecast)
 
         }
     }
+}
+
+var savecities = function() {
+
 }
 
 // getCurrentWeather("nashville", "tn");
