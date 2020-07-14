@@ -54,10 +54,14 @@ var citySubmitHandler = function(event) {
     event.preventDefault();
     //console.log(event);
     var cityInput = cityInputEl.value.trim();
+    cities.push(cityInput)
+    //console.log(cities)
     if (cityInput) {
         getCurrentWeather(cityInput);
         cityInputEl.value = "";
         getForecastWeather(cityInput);
+        savecities();
+        savedCitiesBtn();        
     } else {
         alert("Please enter a City")
     }
@@ -166,9 +170,38 @@ var displayForecastWeather = function(forecast, searchTerm) {
     }
 }
 
-var savecities = function() {
-
+var savedCitiesBtn = function() {
+    pastCities.textContent = ""
+    prevCities = localStorage.getItem("prevCities")
+    prevCities = JSON.parse(prevCities)
+    for (var i = 0; i < prevCities.length; i++) {
+        var prevCitiesBtn = document.createElement("btn")
+        prevCitiesBtn.setAttribute("id", prevCities[i])
+        prevCitiesBtn.setAttribute("type", "button")
+        prevCitiesBtn.classList = "btn btn-outline-secondary btn-block"
+        prevCitiesBtn.textContent = prevCities[i]
+        pastCities.appendChild(prevCitiesBtn)
+    }
 }
+
+var savecities = function() {
+    localStorage.setItem("prevCities", JSON.stringify(cities));
+};
+
+var savedCitiesBtnHandler = function() {
+    //event.preventDefault();
+    //console.log(event);
+    var cityInput = event.target.getAttribute("id");
+    //console.log(cities)
+    if (cityInput) {
+        getCurrentWeather(cityInput);
+        //cityInputEl.value = "";
+        getForecastWeather(cityInput);
+    }
+}
+
 
 // getCurrentWeather("nashville", "tn");
 cityFormEl.addEventListener("submit", citySubmitHandler);
+pastCities.addEventListener("click", savedCitiesBtnHandler);
+savedCitiesBtn();
