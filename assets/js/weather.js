@@ -8,11 +8,12 @@ var today = moment().format("MM/DD/YYYY")
 
 var cities = []
 
+// variable to retrieve current weather
 var getCurrentWeather = function(city) {
     var apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=a39ef6ecc7e9e0847da514b5eeb819bb"
-    //var uvIndexURL = "http://api.openweathermap.org/data/2.5/uvi?appid=a39ef6ecc7e9e0847da514b5eeb819bb&lat=" + lat + "&lon=" + lon
-    
+    // fetch that pull weather data from api
     fetch(apiURL)
+        //checks to see if response is valid
         .then(function(response) {
             if (response.ok) {
                 response.json().then(async(data) => {
@@ -27,14 +28,17 @@ var getCurrentWeather = function(city) {
                 alert("Error: " + response.statusText);
             }
         })
+        //error message for when unable to connect
         .catch(function(error) {
             alert("Unable to connect")
         })
 };
-
+// variable to retrieve weather forecast
 var getForecastWeather = function(city) {
     var apiURLtwo = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=a39ef6ecc7e9e0847da514b5eeb819bb"
+    // fetch that pull forecast data from api
     fetch(apiURLtwo)
+        //checks to see if response is valid
         .then(function(response) {
             if (response.ok) {
                 response.json().then(function(data) {
@@ -45,17 +49,17 @@ var getForecastWeather = function(city) {
             alert("Error: " + response.statusText);
             }
         })
+        //error message for when unable to connect
         .catch(function(error) {
             alert("Unable to connect")
         })
 }
-
+//handles the calling of functions when the submit button is clicked
 var citySubmitHandler = function(event) {
     event.preventDefault();
-    //console.log(event);
     var cityInput = cityInputEl.value.trim();
     cities.push(cityInput)
-    //console.log(cities)
+    // conditionals to activate if valid city is input
     if (cityInput) {
         getCurrentWeather(cityInput);
         cityInputEl.value = "";
@@ -66,18 +70,16 @@ var citySubmitHandler = function(event) {
         alert("Please enter a City")
     }
 }
-
+// dynamically generates the information for current weather
 var displayCurrentWeather = function(weather, searchTerm, uv) {
-    //console.log(weather);
-    //console.log(searchTerm);
+    // determines if city input is valid
     if (weather.weather.description === null) {
         currentWeatherEl.textContent = "Weather not available.";
         return;
     }
+    //generates the elements their styling and content
     currentWeatherEl.textContent = ""
-    //var cityName = weather.name
     var currentCityEl = document.createElement("div")
-    //currentCityEl.classList = ""
     currentCityEl.textContent = weather.name + " (" + today +")"
     currentCityEl.classList.add("current-city", "font-weight-bold")
     var currentIcon = document.createElement("img")
@@ -91,6 +93,7 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
     var uvIndex = document.createElement("div")
     uvIndex.textContent = "UV Index: " + uv
     uvIndex.classList.add("uv-length")
+    // conditionals to color code the uv index input
     if (0 < uv <= 2) {
         uvIndex.classList.add("bg-success") 
     }
@@ -103,7 +106,7 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
     if ( 8 <= uv) {
         uvIndex.classList.add("bg-danger")
     }
-    //console.log(uv);
+    //appends all the elements appropriately
     currentCityEl.appendChild(currentIcon)
     currentWeatherEl.appendChild(currentCityEl)
     currentWeatherEl.appendChild(currentTempEl)
@@ -111,8 +114,9 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
     currentWeatherEl.appendChild(windSpeedEl)
     currentWeatherEl.appendChild(uvIndex)
 }
-
+//dynamically displays the forecast 
 var displayForecastWeather = function(forecast, searchTerm) {
+    // array that stores the forecast data for 5 days
     var forecastArray = [
         {
             day: moment(forecast.list[7].dt * 1000).format("MM/DD/YYYY"),
@@ -146,13 +150,12 @@ var displayForecastWeather = function(forecast, searchTerm) {
         },
         
     ]
-
-    //console.log(forecastArray)
-
+    // conditional that verifies the forecast data is available
     if (forecast.length === 0) {
         forecastWeatherEl.textContent = "Forecast not available.";
         return;
     } 
+    // dynamically generates the elements their attributes and text content similar to the current weather
     else {
         forecastWeatherEl.textContent = ""
         forecastLabelEl.textContent = "5-Day Forecast:"
@@ -184,7 +187,7 @@ var displayForecastWeather = function(forecast, searchTerm) {
         }
     }
 }
-
+// generates the buttons for previous searches
 var savedCitiesBtn = function() {
     pastCities.textContent = ""
     prevCities = localStorage.getItem("prevCities")
@@ -198,24 +201,20 @@ var savedCitiesBtn = function() {
         pastCities.appendChild(prevCitiesBtn)
     }
 }
-
+// stores city input
 var savecities = function() {
     localStorage.setItem("prevCities", JSON.stringify(cities));
 };
-
+// governs what happens when the previous cities are clicked
 var savedCitiesBtnHandler = function() {
-    //event.preventDefault();
-    //console.log(event);
+    // pulls city from the button
     var cityInput = event.target.getAttribute("id");
-    //console.log(cities)
+    // runs the calls to generate the data
     if (cityInput) {
         getCurrentWeather(cityInput);
-        //cityInputEl.value = "";
         getForecastWeather(cityInput);
     }
 }
-
-
 // getCurrentWeather("nashville", "tn");
 cityFormEl.addEventListener("submit", citySubmitHandler);
 pastCities.addEventListener("click", savedCitiesBtnHandler);
