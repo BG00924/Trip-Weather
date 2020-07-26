@@ -27,4 +27,4 @@ https://bg00924.github.io/Trip-Weather/
 
 ## Screenshots
 
-![Overview of Game Search](./assets/images/weather.jpg)
+![Overview of Trip Weather](./assets/images/weather.jpg)
