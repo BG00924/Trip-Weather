@@ -19,7 +19,7 @@ var getCurrentWeather = function(city) {
                 response.json().then(async(data) => {
                     var lat = data.coord.lat
                     var lon = data.coord.lon
-                    let response = await fetch("http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=a39ef6ecc7e9e0847da514b5eeb819bb")
+                    let response = await fetch("https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=a39ef6ecc7e9e0847da514b5eeb819bb")
                     let uv = await response.json()
                     let uvIndex = await uv.value
                     displayCurrentWeather(data, city, uvIndex);
