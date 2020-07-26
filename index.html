@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" />
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <title>Trip Weather</title>
+</head>
+<body>
+    <header class="bg-dark d-flex text-light justify-content-center">
+        <h1>Weather Dashboard</h1>
+    </header>
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+            <div class="col-12 col-md-4">
+                <form id="city-form" class="row mb-2">
+                    <label class="font-weight-bold" for="cityInput">Search for a City:</label>
+                    <input name="cityInput" id="cityInput" type="text" autofocus="true" class="w-75" />
+                    <button type="submit" class="btn btn-primary w-20"><span class="oi oi-magnifying-glass"></span></button>
+                </form>
+                <div id="past-city" class="row">
+                    <div class="col-12"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="row pl-2">
+                    <div id="current-weather" class="">
+                    </div>
+                </div>
+                <div class="row pl-2 mt-5">
+                    <div id="forecast-label" class="col-12 pl-0"></div>
+                    <div id="forecast" class="col d-flex justify-content-around flex-wrap mr-0 pl-0"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src = "./assets/js/weather.js"></script>
+</body>
+</html>
