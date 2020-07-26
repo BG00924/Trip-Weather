@@ -79,6 +79,7 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
     var currentCityEl = document.createElement("div")
     //currentCityEl.classList = ""
     currentCityEl.textContent = weather.name + " (" + today +")"
+    currentCityEl.classList.add("current-city", "font-weight-bold")
     var currentIcon = document.createElement("img")
     currentIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weather.weather[0].icon + ".png")
     var currentTempEl = document.createElement("div")
@@ -89,6 +90,19 @@ var displayCurrentWeather = function(weather, searchTerm, uv) {
     windSpeedEl.textContent = "Wind Speed: " + weather.wind.speed + " MPH"
     var uvIndex = document.createElement("div")
     uvIndex.textContent = "UV Index: " + uv
+    uvIndex.classList.add("uv-length")
+    if (0 < uv <= 2) {
+        uvIndex.classList.add("bg-success") 
+    }
+    if (3 < uv <= 5) {
+        uvIndex.classList.add("uv-color") 
+    }
+    if (6 < uv <= 7) {
+        uvIndex.classList.add("bg-warning") 
+    }
+    if ( 8 <= uv) {
+        uvIndex.classList.add("bg-danger")
+    }
     //console.log(uv);
     currentCityEl.appendChild(currentIcon)
     currentWeatherEl.appendChild(currentCityEl)
@@ -142,6 +156,7 @@ var displayForecastWeather = function(forecast, searchTerm) {
     else {
         forecastWeatherEl.textContent = ""
         forecastLabelEl.textContent = "5-Day Forecast:"
+        forecastLabelEl.classList.add("font-weight-bold", "forecast")
         for (var i = 0; i < forecastArray.length; i++) {
             //var forecastDate = forecastArray.day
             //console.log(forecast.list[i].dt)
