@@ -17,10 +17,7 @@ This page was built with the following technologies:
 
  ## Contributors
  * Blake Gale
- * Chelsey Masood
- * Andre Mayberry
- * Emily Jones
- * Jena Holtzclaw
+
 
 ## Website
 https://bg00924.github.io/Trip-Weather/
